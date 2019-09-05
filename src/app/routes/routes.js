@@ -1,3 +1,7 @@
+
+// Importando a instância do banco
+const db = require('../../config/database');
+
 module.exports = (app) => {
     app.get('/', function (req, resp) {
         resp.send(`
@@ -11,11 +15,16 @@ module.exports = (app) => {
                 </body>
             </html>
     `);
-});
+    });
 
-app.get('/livros', function (req, resp) {
-    resp.marko(
-        require('../views/livros/listagem/listagem.marko')
-    );
-});
+    app.get('/livros', function (req, resp) {
+        db.all('SELECT * FROM livros', function (erro, resultados) {
+            resp.marko(
+                require('../views/livros/listagem/listagem.marko'),
+                {
+                    livros: resultados
+                }
+            );
+        });
+    });
 }
