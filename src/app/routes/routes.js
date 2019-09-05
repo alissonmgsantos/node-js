@@ -28,5 +28,16 @@ module.exports = (app) => {
 
             ))
             .catch(erro => console.log(erro));
-        });
+    });
+
+    app.get('/livros/form', function (req, resp) {
+        resp.marko(require('../views/livros/form/form.marko'))
+    });
+
+    app.post('/livros', function(req, resp) {
+        const livroService = new LivroService(db);
+        livroService.adiciona(req.body)
+            .then(resp.redirect('/livros'))
+            .catch(erro => console.log(erro));
+    });
 }
