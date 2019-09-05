@@ -1,4 +1,4 @@
-
+const LivroService = require('../services/livroService');
 // Importando a instância do banco
 const db = require('../../config/database');
 
@@ -18,13 +18,14 @@ module.exports = (app) => {
     });
 
     app.get('/livros', function (req, resp) {
-        db.all('SELECT * FROM livros', function (erro, resultados) {
+
+        new LivroService(db).lista(function (erro, resultados) {
             resp.marko(
                 require('../views/livros/listagem/listagem.marko'),
                 {
                     livros: resultados
                 }
             );
-        });
+        })
     });
 }
