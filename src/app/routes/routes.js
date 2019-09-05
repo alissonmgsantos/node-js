@@ -18,14 +18,15 @@ module.exports = (app) => {
     });
 
     app.get('/livros', function (req, resp) {
-
-        new LivroService(db).lista(function (erro, resultados) {
-            resp.marko(
+        const livroService = new LivroService(db);
+        livroService.lista()
+            .then(livros => resp.marko(
                 require('../views/livros/listagem/listagem.marko'),
                 {
-                    livros: resultados
+                    livros: livros
                 }
-            );
-        })
-    });
+
+            ))
+            .catch(erro => console.log(erro));
+        });
 }
