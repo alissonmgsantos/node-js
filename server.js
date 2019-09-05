@@ -1,9 +1,13 @@
 const express = require('express');
+const app = express();
 
-const http = require('http');
 
-const server = http.createServer(function (req, resp) {
-    resp.end(`
+app.listen(3000, function() {
+    console.log(`Servidor rodando na porta 3000`);
+});
+
+app.get('/', function (req, resp) {
+        resp.end(`
             <html lang="PT-BR">
                 <head>
                     <meta charset="UTF-8">
@@ -14,7 +18,4 @@ const server = http.createServer(function (req, resp) {
                 </body>
             </html>
     `);
-
 });
-
-server.listen(3000);
