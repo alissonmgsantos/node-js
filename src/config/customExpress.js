@@ -1,3 +1,6 @@
+require('marko/node-require').install();
+require('marko/express');
+
 // Importando express
 const express = require('express');
 const app = express();

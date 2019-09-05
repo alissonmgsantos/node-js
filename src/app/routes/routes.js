@@ -1,6 +1,6 @@
 module.exports = (app) => {
     app.get('/', function (req, resp) {
-        resp.end(`
+        resp.send(`
             <html lang="PT-BR">
                 <head>
                     <meta charset="UTF-8">
@@ -11,5 +11,11 @@ module.exports = (app) => {
                 </body>
             </html>
     `);
+});
+
+app.get('/livros', function (req, resp) {
+    resp.marko(
+        require('../views/livros/listagem/listagem.marko')
+    );
 });
 }
