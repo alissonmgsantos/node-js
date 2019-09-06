@@ -31,24 +31,26 @@ function render(input, out, __component, component, state) {
 
     out.w("<tr" +
       marko_attr("id", "livro_" + livro.id) +
-      "> <td>" +
+      "><td>" +
       marko_escapeXml(livro.id) +
       "</td><td>" +
       marko_escapeXml(livro.titulo) +
       "</td><td>" +
       marko_escapeXml(livro.preco) +
-      "</td><td><a href=\"#\">Editar</a></td> <td><a href=\"#\"" +
+      "</td><td><a" +
+      marko_attr("href", "/livros/form/" + livro.id) +
+      ">Editar</a></td><td><a href=\"#\"" +
       marko_attr("data-ref", "" + livro.id) +
-      " data-type=\"remocao\">Remover</a></td> </tr>");
+      " data-type=\"remocao\">Remover</a></td></tr>");
   });
 
-  out.w("</table> <script src=\"/estatico/js/remove-livro.js\">\r\n        </script> ");
+  out.w("</table><script src=\"/estatico/js/remove-livro.js\">\r\n        </script>");
 
   init_components_tag({}, out);
 
   await_reorderer_tag({}, out, __component, "21");
 
-  out.w("</body> </html>");
+  out.w("</body></html>");
 }
 
 marko_template._ = marko_renderer(render, {
