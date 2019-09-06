@@ -3,18 +3,10 @@ const LivroService = require('../services/livroService');
 const db = require('../../config/database');
 
 module.exports = (app) => {
-    app.get('/', function (req, resp) {
-        resp.send(`
-            <html lang="PT-BR">
-                <head>
-                    <meta charset="UTF-8">
-                    <title>Node js</title>
-                </head>
-                <body>
-                    <h2>Node</h2>
-                </body>
-            </html>
-    `);
+    app.get('/', function(req, resp) {
+        resp.marko(
+            require('../views/home/home.marko')
+        );
     });
 
     app.get('/livros', function (req, resp) {

@@ -26,5 +26,18 @@ app.use(methodOverride(function (req, res) {
 //Importando o modulo de rotas e repassando express para rota 
 const routes = require('../app/routes/routes');
 routes(app);
+
+// TRATAMENTO PARA EXIBIR ERRO 404
+app.use(function (req, resp, next) {
+ return resp.status(404).marko(
+     require('../app/views/erros/404.marko')
+ )
+});
+// TRATAMENTO PARA EXIBIR ERRO 500
+app.use(function (erro, req, resp, next) {
+    return resp.status(500).marko(
+        require('../app/views/erros/500.marko')
+    )
+   });
 // Exportando app express
 module.exports = app;
