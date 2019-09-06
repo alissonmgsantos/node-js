@@ -1,3 +1,4 @@
+const { check, validationResult } = require('express-validator/check');
 const LivroService = require('../services/livroService');
 // Importando a instância do banco
 const db = require('../../config/database');
@@ -11,6 +12,7 @@ module.exports = (app) => {
 
     app.get('/livros', function (req, resp) {
         const livroService = new LivroService(db);
+
         livroService.lista()
             .then(livros => resp.marko(
                 require('../views/livros/listagem/listagem.marko'),
@@ -20,6 +22,7 @@ module.exports = (app) => {
 
             ))
             .catch(erro => console.log(erro));
+        
     });
 
     app.get('/livros/form', function(req, resp) {
@@ -41,11 +44,28 @@ module.exports = (app) => {
     
     });
 
-    app.post('/livros', function(req, resp) {
+    app.post('/livros', [
+        check('titulo').isLength({ min: 5 }).withMessage('O título precisa ter no mínimo 5 caracteres!'),
+        check('preco').isCurrency().withMessage('O preço precisa ter um valor monetário válido!')
+    ], function(req, resp) {
+        console.log(req.body);
         const livroService = new LivroService(db);
+
+        const erros = validationResult(req);
+
+        if (!erros.isEmpty()) {
+            return resp.marko(
+                require('../views/livros/form/form.marko'),
+                { 
+                    livro: {}, 
+                    errosValidacao: erros.array()
+                }
+            );
+        }
+
         livroService.adiciona(req.body)
-            .then(resp.redirect('/livros'))
-            .catch(erro => console.log(erro));
+                .then(resp.redirect('/livros'))
+                .catch(erro => console.log(erro));
     });
 
     app.put('/livros', function(req, resp) {
